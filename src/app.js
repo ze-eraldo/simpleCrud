@@ -38,7 +38,7 @@ app.get("/",(req,res)=>{
     res.status(200).send("CRUD simples com EXPRESS");
 })
 //tras todos os veiculos
-app.get("/veiculos",(req, res)=>{
+app.get("/veiculos",(req, res)=>{   
     res.set({
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
@@ -71,7 +71,7 @@ app.post("/veiculos", (req,res)=>{
         res.status(201).json(carros);
 
     }catch(error){
-        console.log(error)
+        console.log(error) 
     }
     
 })
@@ -79,7 +79,7 @@ app.post("/veiculos", (req,res)=>{
 // alterar um carro
 app.put("/veiculos/:licensePlate",(req,res)=>{
     const index = buscarCarro(req.params.licensePlate);
-    carros[index].name = req.body.name;
+    carros[index]= req.body;
     res.status(200).json(carros);
 })
 // deletar um carro
@@ -88,20 +88,24 @@ app.delete('/veiculos/:id', (req, res) => {
     carros.splice(index, 1);
     res.status(200).send('Carro removido com sucesso.');
   }); 
+
   /*
+  ===============================================
   manutencao
+  ===============================================
   */
- const manutencao ={
+ const manutencao =[
+    {
     licensePlate: 'AXX-1244',
     date: '02/02/2023',
     value: 100,
     referenceOdometer: 1000,
     readOdometer: 1000,
     description: 'Breaks'
-
- }
-//tras todps os veiculos pra manutencao
-app.get("/manutencao",(req, res)=>{
+    }
+]
+//tras todas as manutencoes
+app.get("/revisao",(req, res)=>{
     res.set({
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
@@ -109,6 +113,29 @@ app.get("/manutencao",(req, res)=>{
     });
     res.status(200).json(manutencao);
     
+})
+// cria nova manutencao
+app.post("/revisao", (req,res)=>{
+    try{
+        res.set({
+            'Access-Control-Allow-Origin':'*',
+            'Access-Control-Allow-Headers':'Origin, X-Requested-With, Content-Type, Accept',
+            'Content-Type':'application/json; charset=utf-8',
+            'Accept': 'application/json'
+        }); 
+        manutencao.push(req.body);
+        res.status(201).json(manutencao);
+
+    }catch(error){
+        console.log(error) 
+    }
+    
+})
+// alterar uma manutencao
+app.put("/revisao/:licensePlate",(req,res)=>{
+    const index = buscarCarro(req.params.licensePlate);
+    manutencao[index]= req.body;
+    res.status(200).json(manutencao);
 })
 
 export default app;
